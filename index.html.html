@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Navigator Adventkalender</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- IM Fell English Font für Header (Regulär) und SC für Türchen (Small Caps) -->
+    <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:wght@400&family=IM+Fell+English+SC&display=swap" rel="stylesheet">
+    <!-- Nunito Font für Body -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- GENERAL & FONTS --- */
+        body {
+            /* Hintergrundbild wird direkt hier geladen (Annahme: Bild ist verfügbar) */
+            background-image: url('hintergrund2.jpg'); 
+            background-color: #10162F; /* Fallback: Tiefes Marineblau */
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            overflow-x: hidden;
+            font-family: 'Nunito', sans-serif;
+            transition: all 1s ease;
+        }
+
+        /* H1 nutzt nun die reguläre IM Fell English */
+        .header-title {
+            font-family: 'IM Fell English', serif;
+            color: #dcb639; /* Gold */
+            text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
+        }
+        
+        /* H2: Entspannt durch die stürmische Adventszeit (BLAUER TEXT AUF GOLD) */
+        .header-subtitle {
+            font-family: 'IM Fell English', serif;
+            /* Hintergrund: Gold */
+            background-color: #D4AF37; 
+            /* Text: Tiefes Dunkelblau */
+            color: #10162F; 
+            /* Optional: Leichter Schatten für Tiefe */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4); 
+            /*text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.5); /* Weißer Schatten auf blauem Text */
+            
+            /* Layout: Nur so breit wie der Inhalt, zentriert */
+            display: inline-block; 
+            padding: 0.4rem 1.5rem; 
+            border-radius: 0.55rem; 
+            margin-top: 0.5rem; /* Abstand zum H1 */
+            margin-bottom: 0.5rem;
+        }
+        
+        /* H1 Größe (Mobile: 1.75rem, Desktop: 3rem) - leicht reduziert */
+        .header-title {
+            font-size: 2.0rem; /* Default mobile, reduziert */
+        }
+        @media (min-width: 700px) {
+            .header-title {
+                font-size: 2.5rem; /* Desktop/Tablet, reduziert */
+            }
+        }
+
+        /* H2 Größe (Mobile: 1.4rem, Desktop: 1.5rem) */
+        .header-subtitle {
+            font-size: 1.2rem; /* Default mobile */
+        }
+        @media (min-width: 640px) {
+            .header-subtitle {
+                font-size: 1.2rem; /* Desktop/Tablet */
+            }
+        }
+
+        /* --- DOOR STYLES --- */
+        
+        .advent-door {
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+            /* Äußerer Goldrahmen (dünner) */
+            border: 2px solid #D4AF37; 
+        }
+
+        .door-unopened {
+            cursor: pointer;
+            /* Hintergrund: Weinrot */
+            background-color: #800020d7; 
+            color: #D4AF37; /* Gold für Zahlen */
+            /* Innerer weinroter Rahmen, der den Abstand zum Goldrahmen schafft */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 
+                        inset 0 0 0 5px #800020; 
+        }
+        
+        .door-unopened:hover {
+             transform: scale(1.05) rotate(1deg);
+             box-shadow: 0 15px 25px -5px rgba(0, 0, 0, 0.4),
+                         inset 0 0 0 5px #800020; /* Innerer Rahmen behalten */
+        }
+
+        .door-locked {
+            cursor: not-allowed;
+            /* Tiefes Marineblau/Schwarz (nautisch) */
+            background: #10162F; 
+            opacity: 0.95;
+            filter: brightness(0.9);
+            color: #D4AF37; /* Gold für gesperrte Zahlen */
+            border-color: #D4AF37; 
+        }
+        
+        .door-opened {
+            cursor: pointer;
+            /* Hintergrundbild für geöffnete Türchen */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: #D4AF37; /* Goldene Schrift für Zahl */
+            border-color: #D4AF37;
+            box-shadow: inset 0 0 15px rgba(212, 175, 55, 0.5); /* Innerer Goldschimmer */
+            transform: scale(0.95);
+            position: relative; /* Für den Textschatten wichtig */
+        }
+        /* Hauptzahl ist nun nur für ungeöffnete/gesperrte Türchen relevant, daher CSS Anpassung entfernt */
+        .door-opened:hover {
+             transform: scale(1.0) rotate(0deg);
+             box-shadow: inset 0 0 0px rgba(212, 175, 55, 0.7);
+        }
+
+        /* Türchennummern und Indikatoren behalten Small Caps */
+        .door-number {
+            font-size: 2.8rem; /* Deutlichere Zahlengröße */
+            font-weight: 700;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7); /* Schatten für bessere Sichtbarkeit auf dunklem BG */
+            font-family: 'IM Fell English SC', serif; /* Gewünschte Schriftart für Türchen */
+        }
+        
+        /* HIER IST DIE ANPASSUNG: Die Nummer oben rechts ist nun GOLD */
+        .door-indicator {
+            position: absolute;
+            top: 0.5rem; /* Oben rechts */
+            right: 0.5rem;
+            font-size: 1.25rem; /* Kleiner als die Hauptzahl */
+            font-weight: 700;
+            color: #D4AF37; /* GEÄNDERT: Gold für den Indikator auf geöffnetem Türchen-Bild */
+            font-family: 'IM Fell English SC', serif;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7); /* Dunkler Schatten für Lesbarkeit auf Bild */
+        }
+
+        /* --- LAYOUT & RESPONSIVENESS FIX --- */
+        .advent-grid {
+            grid-template-columns: repeat(3, 1fr); /*  Spalten auf Mobile/Default */
+        }
+        @media (min-width: 768px) { /* Medium screens and up */
+            .advent-grid {
+                grid-template-columns: repeat(6, 1fr); /* 6 Spalten auf Desktop */
+            }
+        }
+        
+        /* Loading Spinner */
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid #D4AF37;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .snowflake {
+            position: fixed; top: -10px; color: white; font-size: 1em;
+            pointer-events: none; animation-name: snowfall; animation-timing-function: linear; animation-iteration-count: infinite;
+        }
+        @keyframes snowfall {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(110vh) rotate(360deg); }
+        }
+
+        /* --- MODAL STYLES FÜR TIP TITLE (NEU) --- */
+        /* Miniüberschrift nutzt nun die reguläre IM Fell English */
+        .tip-title {
+            font-family: 'IM Fell English', serif; 
+            font-size: 1.5rem; /* Etwas größer als der Inhaltstext */
+            font-weight: 700; /* Fett */
+            color: #800020; /* Weinrot */
+            margin-bottom: 0.5rem;
+            display: block; 
+        }
+
+        /* ================================================================================= */
+        /* HIER BEGINNT DIE ANPASSUNG FÜR TÜRE 24 */
+        /* ================================================================================= */
+
+        /* Selektiert das Element mit dem Attribut data-day="24" im Grid-Container */
+        #advent-grid [data-day="24"] {
+            /* WICHTIG: Erweitert das Türchen über 2 Spalten im Grid */
+            grid-column: span 2;
+            /* WICHTIG: Erweitert das Türchen über 2 Reihen im Grid */
+            grid-row: span 2;
+            
+            /* Zusätzliche visuelle Hervorhebung */
+            z-index: 10;
+            border: 4px solid #FFD700; /* Dickerer Goldrand */
+            box-shadow: 0 10px 20px -5px rgba(255, 215, 0, 0.5), 0 6px 10px rgba(0, 0, 0, 0.5); 
+        }
+
+        /* Vergrößere die Zahl 24, damit sie im größeren Feld gut aussieht */
+        #advent-grid [data-day="24"] .door-number {
+            font-size: 4.5rem; 
+        }
+        
+        /* ================================================================================= */
+        /* ENDE DER ANPASSUNG FÜR TÜRE 24 */
+        /* ================================================================================= */
+
+
+
+
+    </style>
+</head>
+<body class="text-white min-h-screen p-4 sm:p-8" id="app-body">
+
+    <!-- Schneeflocken Container -->
+    <div id="snow-container"></div>
+
+    <!-- Loading Screen Overlay -->
+    <div id="loading-overlay" class="fixed inset-0 bg-gray-900 flex flex-col items-center justify-center z-50 transition-opacity duration-500">
+        <div class="spinner mb-4"></div>
+        <p class="text-lg text-white" id="loading-text">Lade Kalender...</p>
+        <p class="text-sm text-gray-400 mt-2">(Bitte warten)</p>
+    </div>
+
+    <!-- Haupt-Container (jetzt ohne transparentes Overlay) -->
+    <div id="main-content" class="p-4 sm:p-10 rounded-xl shadow-2xl max-w-6xl mx-auto hidden">
+        
+        <header class="text-center mb-10">
+            <h1 class="text-gold-600 mb-2 header-title">
+                - DIGITAL NAVIGATOR - Adventkalender
+            </h1>
+            <h2 class="font-bold header-subtitle">
+                Entspannt durch die stürmische Adventszeit
+            </h2>
+        </header>
+
+        <!-- Container für die 24 Türchen -->
+        <div id="advent-grid" class="advent-grid grid gap-8 sm:gap-8">
+            <!-- Türchen werden hier per JavaScript eingefügt -->
+        </div>
+        <div id="info-message" class="col-span-full text-center text-lg mt-4 p-4 bg-red-800/80 rounded-xl shadow-inner text-yellow-100 hidden"></div>
+
+    </div>
+
+    <!-- Modal für die Anzeige der Tipps -->
+    <div id="modal" class="fixed inset-0 bg-black bg-opacity-75 hidden z-50 flex items-center justify-center p-4">
+        <!-- 'shadow-2xl' wurde entfernt, 'uppercase' zur H2 hinzugefügt -->
+        <div class="bg-yellow-50 w-full max-w-lg p-6 sm:p-8 rounded-2xl transform transition-all duration-300 scale-100 text-black">
+            <!-- DIES IST DIE HAUPTÜBERSCHRIFT IM POPUP (z.B. "Türchen 5") -->
+            <!-- HINWEIS: Auch diese Überschrift im Modal nutzt nun das Dunkelblau auf Gold, wenn die Klasse "header-subtitle" hinzugefügt wird -->
+            <h2 id="modal-title" class="text-2xl sm:text-3xl font-bold mb-3 text-gold-600 header-subtitle uppercase"></h2>
+            <!-- Hier kommt der Inhalt rein -->
+            <div id="modal-content" class="text-lg mb-6 font-medium"></div>
+            <button onclick="closeModal()" class="w-full bg-red-700 hover:bg-red-800 text-white font-bold py-3 rounded-xl transition duration-200 shadow-lg">
+                Schließen & genießen
+            </button>
+        </div>
+    </div>
+
+<script>
+    // --- CONFIGURATION ---
+    // Die Türchen bleiben nur in der aktuellen Sitzung geöffnet. Beim Neuladen wird der Status zurückgesetzt.
+    
+    // FÜR TESTZWECKE: AUF 'true' SETZEN, um alle 24 Türchen sofort freizuschalten (als wäre heute der 24. Dezember).
+    // FÜR VEROEFFENTLICHUNG (ab 1. Dez 2025): AUF 'false' SETZEN.
+    const testingOverride = false; 
+    const TARGET_YEAR = 2025; 
+
+    // Die irreguläre Reihenfolge der Türchen (1 bis 24 gemischt)
+    const DOOR_ORDER = [10, 2, 18, 5, 23, 1, 14, 8, 20, 3, 16, 12, 6, 22, 9, 17, 4, 19, 11, 24, 7, 15, 13, 21];
+    
+    // Lokaler Speicher für geöffnete Türchen (Session-Scope)
+    let openedDoors = []; 
+    
+    // Speichern aller Door-Elemente, um sie später aktualisieren zu können
+    const doorElements = {}; 
+    
+    // Definition der 24 Resilienz-Tipps
+    // Jeder Eintrag muss den Titel und den Inhalt durch einen Doppelpunkt trennen: "Titel: Inhalt"
+    // ------------------------------------------------------------------------------------------------
+    // HINWEIS: HIER KÖNNEN SIE DIE INHALTE (Titel/Mini-Überschrift und Text) ANPASSEN
+    // ------------------------------------------------------------------------------------------------
+    const CYBER_SPA_TIPS = [
+        "Tee-Zeremonie: Mach dir eine Tasse Tee (Kräuter, Früchte, Chai,...) und setz dich damit ans Fenster. Beobachte was draußen passiert und erfreue dich an der heißten Tasse Tee während es draußen ungemütlcih aussieht",
+        "Natur-Reset: Geh nach draußen und mache ein schönes Naturfoto. Egal wie das Wetter ist, finde irgendein Detail oder eine Szene die dir gefällt",
+        "Real-Life-Likes: Feiere deine Erfolge. Notiere 3 geschaffte Dinge (z.B. Hausaufgaben, Zimmer aufräumen) und gib dir einen Sticker/Daumen hoch.",
+        "Offline-Bingo: Die Challenge: Entdecke 5 Dinge ohne Screens. etwas GRÜNES, etwas WEICHES, etwas WARMES, etwas LECKERES und etwas DUFTENDES. Finde alle fünf! Was ist dein Favorit?",
+        "Witz-Generator: Erzähle jemandem einen Witz. Wenn du keinen weißt, dann frage nach einem! Lachen baut sofort Stress ab.",
+        "Post an dich selbst: Schreib dir selbst eine liebe und ermutigende Nachricht für die kommende Woche. Bewahre sie auf.",
+        "Frühstückszeit: Frühstücke ohne Handy. Lass es am besten in einem anderen Zimmer liegen!",
+        "Song-Skizze: Suche dir einen Song, der dich happy macht, und versuche ein Bild dazu zu gestalten oder zu malen.",
+        "Die gute Tat: Deine heutige Mission - gib jemanden ein ehrliches Kompliment! Sprich einfach aus, wenn du dir was Nettes denkst.",
+        "Die 10-Minuten-Pause: Verbringe 10 Minuten einfach „nichts tuend“. Sitzen, schauen, atmen. Kein Input, kein Output.",
+        "Power-Up Challenge: Finde Stufen und laufe mindestens 5 Stockwerke rauf und runter! Hol dir dein Mini-Workout.",
+        "Film-Fokus: Gucke einen Film, ohne dabei zum Handy zu greifen und schalte es auf stumm. Volle Konzentration!",
+        "Brief-Revival: Schreibe einen echten Brief. Vielleicht an die Großeltern oder einen Freund? Und vergiss nicht, dir eine Briefmarke zu besorgen!",
+        "Winterspaziergang: Mache einen Spaziergang (mind. 15 Minuten) und lass dabei dein Handy bewusst zuhause. Lass deine Gedanken schweifen.",
+        "Digitaler Weihnachtsputz: Überlege, welche sozialen Medien und Posts dir Stress machen. Entfolge 3 Accounts, die dir ein schlechtes Gefühl geben.",
+        "Erlebnis-Wünsche: Lege das Handy weg und schreib dir 3 Erlebnis-Wünsche auf, die du hast (keine Dinge! z.B. Ausflug, Freunde treffen).",
+        "Bücherwurm: Lese heute 20 Minuten in einem physischen Buch, Magazin oder Comic. Wenn du nur durchblättern willst - auch ok!",
+        "Digitales Lagerfeuer: Verzichte diesen Abend mal auf Social Media und co. Suche dir ein Video von einem knisternden Lagerfeuer auf YouTube und entspanne mit Decke, Tee oder Snacks",
+        "Spielzeit: Schlage deinen Freunden oder deiner Familie ein analoges Spiel (Karten, Brettspiel) vor, das ihr zusammen spielen könnt. Aber mit Kakao und Snacks natürlich!",
+        "Hobby-Kickstart: Starte oder plane den ersten Schritt für ein Hobby, das KEINEN Strom benötigt (z.B. Malen, Stricken, Kekse backen, Handwerken,...). Das kann auch einfach eine kleine Bleistiftskizze von einem Baum sein.",
+        "Mini-Wellness: Gönn dir ein warmes Fußbad mit Seife (hole dir z.B. einen Eimer oder benutze die Dusche/Wanne). Dein persönliches Spa - und vergiss den Kakao dazu nicht!",
+        "Push-Pause: Schalte alle Push-Nachrichten für 24 Stunden aus. Genieße die Freiheit und Ruhe - und Kekse!",
+        "Last-Minute-Geschenk: Nutze dein Handy bewusst - suche nach DIY Christmas Gift ideas und bastle noch schnell ein kleines Geschenk für jemanden",
+        "Frohe Weihnachten!: Heute ist alles erlaubt, was dir gut tut! Trinke dein Lieblings-Heißgetränk, schicke Freunden Wintergrüße mit bunten Emojis, hol dir was Süßes zum Naschen und leg die Beine hoch. Fröhliche Weihnachten!",
+    ];
+
+    // --- CALENDAR DATE LOGIC ---
+
+    function getCurrentAdventDay() {
+        if (testingOverride) {
+            return 24; // Testmodus: Alle 24 Tage verfügbar
+        }
+        
+        const today = new Date();
+        const currentYear = today.getFullYear();
+        const currentMonth = today.getMonth(); // 11 ist Dezember (0-indiziert)
+        const currentDate = today.getDate();
+
+        // Nur im Dezember des Zieljahres aktiv
+        if (currentYear === TARGET_YEAR && currentMonth === 11) { 
+            if (currentDate >= 1 && currentDate <= 24) {
+                return currentDate;
+            } else if (currentDate > 24) {
+                return 24; // Alle Türen nach dem 24. offen
+            }
+        } 
+        return 0; // Außerhalb des Dezembers/Zieljahres geschlossen
+    }
+
+    let currentAdventDay = getCurrentAdventDay();
+
+    // --- UI RENDERING LOGIC ---
+
+    function createDoor(day) {
+        const doorElement = document.createElement('div');
+        doorElement.className = `advent-door relative aspect-square rounded-xl flex items-center justify-center select-none`;
+        doorElement.setAttribute('data-day', day);
+        
+        doorElement.innerHTML = `<span class="door-number">${day}</span>`; // Große Zahl in der Mitte
+        doorElements[day] = doorElement;
+        return doorElement;
+    }
+
+    function updateDoorVisuals() {
+        const infoMessage = document.getElementById('info-message');
+        infoMessage.classList.add('hidden');
+        
+        // Wenn der Kalender nicht aktiv ist (und nicht im Testmodus)
+        if (currentAdventDay === 0 && !testingOverride) {
+            infoMessage.textContent = `Achtung: Der Kalender ist momentan noch verschlossen. Er öffnet sich automatisch am 1. Dezember ${TARGET_YEAR}!`;
+            infoMessage.classList.remove('hidden');
+        }
+
+        for (const day of DOOR_ORDER) {
+            const doorElement = doorElements[day];
+            if (!doorElement) continue;
+
+            const isAvailable = day <= currentAdventDay;
+            const isOpen = openedDoors.includes(day);
+
+            // Entferne alle Zustands-Klassen und inline-Stile
+            doorElement.classList.remove('door-locked', 'door-unopened', 'door-opened');
+            doorElement.removeAttribute('onclick');
+            doorElement.style.backgroundImage = 'none'; // Hintergrundbild entfernen
+            
+            // Setze den inneren Inhalt zurück, nur mit der großen Zahl
+            doorElement.innerHTML = `<span class="door-number">${day}</span>`;
+
+            if (!isAvailable) {
+                // 1. Gesperrt (Datum ist noch nicht erreicht)
+                doorElement.classList.add('door-locked');
+                doorElement.innerHTML += `
+                    <!-- Schloss-Icon für gesperrtes Türchen -->
+                    <svg class="absolute top-2 right-2 w-4 h-4" fill="currentColor" style="color: #D4AF37;" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 1a4 4 0 00-4 4v2h8V5a4 4 0 00-4-4zm0 10a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
+                    </svg>
+                `;
+            } else if (isOpen) {
+                // 2. Verfügbar und Geöffnet (in dieser Sitzung angeklickt)
+                doorElement.classList.add('door-opened');
+                doorElement.style.backgroundImage = `url('bild${day.toString().padStart(2, '0')}.png')`; // Bild als Hintergrund
+                doorElement.setAttribute('onclick', `openModal(${day})`);
+                
+                // *** WICHTIGE ÄNDERUNG: Entferne die zentrale Zahl, behalte nur den Indikator ***
+                doorElement.innerHTML = ``; 
+                // Fügt die Türchennummer als Indikator oben rechts hinzu
+                // Die Farbe für diesen Indikator wird durch .door-indicator im CSS auf Gold gesetzt
+                doorElement.innerHTML += `<span class="door-indicator">${day}</span>`; // Kleine Zahl oben rechts
+            } else {
+                // 3. Verfügbar und Ungeöffnet (Datum erreicht, aber noch nicht angelickt)
+                doorElement.classList.add('door-unopened');
+                doorElement.setAttribute('onclick', `openDoor(${day})`);
+                // Nur die große zentrale Zahl
+            }
+        }
+    }
+
+    function renderAdventCalendar() {
+        const grid = document.getElementById('advent-grid');
+        grid.innerHTML = ''; 
+        
+        DOOR_ORDER.forEach(day => {
+            const door = createDoor(day);
+            grid.appendChild(door);
+        });
+        
+        updateDoorVisuals(); 
+        hideLoadingScreen();
+    }
+    
+    function hideLoadingScreen() {
+          document.getElementById('loading-overlay').classList.add('opacity-0');
+          setTimeout(() => {
+              document.getElementById('loading-overlay').classList.add('hidden');
+              document.getElementById('main-content').classList.remove('hidden');
+          }, 500);
+    }
+    
+    // --- GLOBAL WINDOW FUNCTIONS ---
+
+    window.openDoor = function(day) {
+        if (day > currentAdventDay || openedDoors.includes(day)) return;
+        
+        // Türchen als geöffnet markieren (nur in dieser Sitzung)
+        openedDoors.push(day);
+        updateDoorVisuals();
+
+        // Modal öffnen
+        openModal(day);
+    }
+
+    window.openModal = function(day) {
+        const fullTip = CYBER_SPA_TIPS[day - 1];
+        // Teilt den String am ersten Doppelpunkt in zwei Teile: Titel und Inhalt
+        const [title, content] = fullTip.split(/:\s*(.*)/s).slice(0, 2); 
+        
+        // ------------------------------------------------------------------------------------------------
+        // HINWEIS: HIER KÖNNEN SIE DEN TEXT "Türchen" IN DER HAUPTÜBERSCHRIFT ANPASSEN
+        // ------------------------------------------------------------------------------------------------
+        document.getElementById('modal-title').textContent = `Türchen ${day}`;
+        
+        const modalContentEl = document.getElementById('modal-content');
+
+        // Fügt den neuen visuell abgetrennten Titel (tip-title) und den Hauptinhalt ein
+        modalContentEl.innerHTML = `
+            <span class="tip-title">${title.trim()}</span>
+            <p class="mb-0">${content.trim()}</p>
+        `;
+
+        document.getElementById('modal').classList.remove('hidden');
+    }
+
+    window.closeModal = function() {
+        document.getElementById('modal').classList.add('hidden');
+    }
+
+    // --- SNOWFALL EFFECT ---
+    function createSnow() {
+        const snowContainer = document.getElementById('snow-container');
+        if (!snowContainer) return;
+        for (let i = 0; i < 60; i++) {
+            const snow = document.createElement('div');
+            snow.className = 'snowflake';
+            snow.textContent = '❄';
+            snow.style.left = Math.random() * 100 + 'vw';
+            snow.style.fontSize = (Math.random() * 10 + 10) + 'px';
+            snow.style.opacity = Math.random();
+            snow.style.animationDuration = (Math.random() * 5 + 5) + 's';
+            snowContainer.appendChild(snow);
+        }
+    }
+
+    // --- APPLICATION START ---
+    document.addEventListener('DOMContentLoaded', () => {
+        renderAdventCalendar();
+        createSnow();
+    });
+</script>
+</body>
+</html>
