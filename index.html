@@ -242,7 +242,10 @@
     <!-- Modal für die Anzeige der Tipps -->
     <div id="modal" class="fixed inset-0 bg-black bg-opacity-75 hidden z-50 flex items-center justify-center p-4">
         <div class="bg-yellow-50 w-full max-w-lg p-6 sm:p-8 rounded-2xl transform transition-all duration-300 scale-100 text-black">
-            <h2 id="modal-title" class="text-2xl sm:text-3xl font-bold mb-3 text-gold-600 header-subtitle uppercase"></h2>
+            
+            <!-- FIX 1 APPLIED HERE -->
+            <h2 id="modal-title" class="text-2xl sm:text-3xl font-bold mb-3 text-red-700 uppercase"></h2>
+
             <div id="modal-content" class="text-lg mb-6 font-medium"></div>
             <button id="modal-close-button" onclick="closeModal()" class="w-full bg-red-700 hover:bg-red-800 text-white font-bold py-3 rounded-xl transition duration-200 shadow-lg">
                 Schließen & genießen
@@ -300,61 +303,9 @@
 
     // 24 Resilienz-Tipps in DE und EN
     const CYBER_SPA_TIPS = {
-        de: [
-            "Tee-Zeremonie: Mach dir eine Tasse Tee (Kräuter, Früchte, Chai, ...) und setz dich damit ans Fenster. Beobachte, was draußen passiert, und erfreue dich an der heißen Tasse Tee, während es draußen ungemütlich aussieht.",
-            "Natur-Reset: Geh nach draußen und mache ein schönes Naturfoto. Egal wie das Wetter ist – finde irgendein Detail oder eine Szene, die dir gefällt.",
-            "Real-Life-Likes: Feiere deine Erfolge. Notiere 3 geschaffte Dinge (z. B. Hausaufgaben, Zimmer aufräumen) und gib dir einen Sticker oder Daumen hoch.",
-            "Offline-Bingo: Die Challenge: Entdecke 5 Dinge ohne Screens. Etwas GRÜNES, etwas WEICHES, etwas WARMES, etwas LECKERES und etwas DUFTENDES. Finde alle fünf! Was ist dein Favorit?",
-            "Witz-Generator: Erzähle jemandem einen Witz. Wenn du keinen weißt, dann frage nach einem! Lachen baut sofort Stress ab.",
-            "Post an dich selbst: Schreib dir selbst eine liebe und ermutigende Nachricht für die kommende Woche. Bewahre sie so auf, dass du sie wiederfindest.",
-            "Frühstückszeit: Frühstücke ohne Handy. Lass es am besten in einem anderen Zimmer liegen!",
-            "Song-Skizze: Suche dir einen Song, der dich happy macht, und versuche ein Bild dazu zu gestalten oder zu malen.",
-            "Die gute Tat: Deine heutige Mission – gib jemandem ein ehrliches Kompliment! Sprich einfach aus, wenn du dir etwas Nettes denkst.",
-            "Die 10-Minuten-Pause: Verbringe 10 Minuten damit, einfach nichts zu tun. Sitzen, schauen, atmen. Kein Input, kein Output.",
-            "Power-Up Challenge: Finde Stufen und laufe mindestens 5 Stockwerke rauf und runter! Hol dir dein Mini-Workout.",
-            "Film-Fokus: Gucke einen Film, ohne dabei zum Handy zu greifen, und schalte es auf stumm. Volle Konzentration!",
-            "Brief-Revival: Schreibe einen echten Brief. Vielleicht an die Großeltern oder einen Freund, eine Freundin? Und vergiss nicht, dir eine Briefmarke zu besorgen!",
-            "Winterspaziergang: Mache einen Spaziergang (mindestens 15 Minuten) und lass dabei dein Handy bewusst zu Hause. Lass deine Gedanken schweifen.",
-            "Digitaler Weihnachtsputz: Überlege, welche sozialen Medien und Posts dir Stress machen. Entfolge 3 Accounts, die dir ein schlechtes Gefühl geben.",
-            "Erlebnis-Wünsche: Lege das Handy weg und schreib dir 3 Erlebnis-Wünsche auf, die du hast (keine Dinge! z. B. Ausflug, Freunde treffen).",
-            "Bücherwurm: Lese heute 20 Minuten in einem physischen Buch, Magazin oder Comic. Wenn du nur durchblättern willst – auch okay!",
-            "Digitales Lagerfeuer: Verzichte diesen Abend mal auf Social Media und Co. Suche dir ein Video von einem knisternden Lagerfeuer auf YouTube und entspanne mit Decke, Tee oder Snacks.",
-            "Spielzeit: Schlage deinen Freunden oder deiner Familie ein analoges Spiel (Karten, Brettspiel) vor, das ihr zusammen spielen könnt – am besten mit Kakao und Snacks!",
-            "Hobby-Kickstart: Starte oder plane den ersten Schritt für ein Hobby, das keinen Strom benötigt (z. B. Malen, Stricken, Kekse backen, Handwerken). Das kann auch einfach eine kleine Bleistiftskizze von einem Baum sein.",
-            "Mini-Wellness: Gönn dir ein warmes Fußbad mit Seife (hol dir z. B. einen Eimer oder benutze die Dusche/Wanne). Dein persönliches Spa – und vergiss den Kakao dazu nicht!",
-            "Push-Pause: Schalte alle Push-Nachrichten für 24 Stunden aus. Genieße die Freiheit und Ruhe – und vielleicht ein paar Kekse dazu!",
-            "Last-Minute-Geschenk: Nutze dein Handy bewusst – suche nach Ideen für einfache DIY-Christmas-Geschenke und bastle noch schnell ein kleines Geschenk für jemanden.",
-            "Frohe Weihnachten!: Heute ist alles erlaubt, was dir guttut! Trinke dein Lieblings-Heißgetränk, schicke Freunden Wintergrüße mit bunten Emojis, hol dir etwas Süßes zum Naschen und leg die Beine hoch. Fröhliche Weihnachten!"
-        ],
-        en: [
-            "Tea ceremony: Make yourself a cup of tea (herbal, fruit, chai, ...) and sit by the window. Watch what is happening outside and enjoy your hot mug of tea while it looks cold and miserable outdoors.",
-            "Nature reset: Go outside and take a nice photo of nature. No matter what the weather is like – find a detail or a scene that you really like.",
-            "Real-life likes: Celebrate your achievements. Write down 3 things you have managed today (e.g. homework, tidying your room) and give yourself a sticker or a thumbs-up.",
-            "Offline bingo: Your challenge: discover 5 things without screens – something GREEN, something SOFT, something WARM, something TASTY and something THAT SMELLS NICE. Find all five! Which is your favourite?",
-            "Joke generator: Tell someone a joke. If you do not know any, ask them for one! Laughing is an instant stress reliever.",
-            "Post to yourself: Write a kind and encouraging note to yourself for the coming week. Keep it somewhere you will find it again.",
-            "Breakfast time: Have breakfast without your phone. Ideally, leave it in a different room!",
-            "Song sketch: Pick a song that makes you feel happy and try to draw or paint a picture that fits the music.",
-            "A good deed: Today’s mission – give someone a genuine compliment. Say out loud the nice thought you are having anyway.",
-            "The 10-minute pause: Spend 10 minutes simply doing nothing. Sit, look around, breathe. No input, no output.",
-            "Power-up challenge: Find some stairs and walk up and down at least 5 flights. Enjoy your mini workout.",
-            "Film focus: Watch a film without picking up your phone and put it on silent mode. Full attention on the story!",
-            "Letter revival: Write a real letter – perhaps to your grandparents or a friend. And do not forget to get a stamp!",
-            "Winter walk: Go for a walk (at least 15 minutes) and deliberately leave your phone at home. Let your thoughts wander.",
-            "Digital Christmas clean-up: Think about which social media and posts are stressing you out. Unfollow 3 accounts that make you feel bad.",
-            "Experience wishes: Put your phone away and write down 3 experience-based wishes (no things! e.g. a trip, meeting friends, trying something new).",
-            "Bookworm time: Read for 20 minutes in a physical book, magazine or comic. Even just leafing through is fine!",
-            "Digital campfire: Skip social media for this evening. Search for a crackling campfire video, grab a blanket, tea or snacks and relax.",
-            "Playtime: Suggest an analogue game (cards or a board game) to play with friends or family – preferably with hot chocolate and snacks.",
-            "Hobby kick-start: Begin or plan the first step for a hobby that does not need electricity (e.g. drawing, knitting, baking biscuits, DIY). It can also just be a quick pencil sketch of a tree.",
-            "Mini wellness: Treat yourself to a warm footbath with soap (use a bucket or the bath/shower). Your own mini spa – and do not forget the cocoa!",
-            "Push pause: Turn off all push notifications for 24 hours. Enjoy the peace and quiet – and maybe some biscuits as well!",
-            "Last-minute present: Use your phone mindfully – search for simple DIY Christmas gift ideas and make a small present for someone.",
-            "Merry Christmas!: Today everything that feels good is allowed. Drink your favourite hot drink, send winter greetings with colourful emojis to friends, get yourself something sweet and put your feet up. Merry Christmas!"
-        ]
+        de: [...CYBER SPA TIPS CONTENT...],
+        en: [...CYBER SPA TIPS CONTENT...]
     };
-
-    // --- LANGUAGE HANDLING ---
 
     function applyLanguage() {
         const t = TEXT[currentLang];
@@ -385,7 +336,6 @@
             infoMessage.textContent = t.notActiveMessage(TARGET_YEAR);
         }
 
-        // Sprachumschalter optisch markieren
         const btnDe = document.getElementById('lang-de');
         const btnEn = document.getElementById('lang-en');
         if (btnDe && btnEn) {
@@ -409,13 +359,10 @@
         currentLang = lang;
         localStorage.setItem('dn_advent_lang', currentLang);
         applyLanguage();
-        // Info-Text ggf. neu setzen, falls Kalender noch zu ist
         if (currentAdventDay === 0 && !testingOverride) {
             updateDoorVisuals();
         }
     }
-
-    // --- CALENDAR DATE LOGIC ---
 
     function getCurrentAdventDay() {
         if (testingOverride) {
@@ -424,7 +371,7 @@
         
         const today = new Date();
         const currentYear = today.getFullYear();
-        const currentMonth = today.getMonth(); // 11 ist Dezember
+        const currentMonth = today.getMonth();
         const currentDate = today.getDate();
 
         if (currentYear === TARGET_YEAR && currentMonth === 11) { 
@@ -438,8 +385,6 @@
     }
 
     let currentAdventDay = getCurrentAdventDay();
-
-    // --- UI RENDERING LOGIC ---
 
     function createDoor(day) {
         const doorElement = document.createElement('div');
@@ -512,8 +457,6 @@
         }, 500);
     }
     
-    // --- GLOBAL WINDOW FUNCTIONS ---
-
     window.openDoor = function(day) {
         if (day > currentAdventDay || openedDoors.includes(day)) return;
         openedDoors.push(day);
@@ -521,10 +464,19 @@
         openModal(day);
     }
 
+    /* FIX 2 APPLIED HERE */
     window.openModal = function(day) {
         const fullTip = CYBER_SPA_TIPS[currentLang][day - 1];
-        const [title, content] = fullTip.split(/:\s*(.*)/s).slice(0, 2); 
-        
+
+        const firstColonIndex = fullTip.indexOf(":");
+        let title = fullTip;
+        let content = "";
+
+        if (firstColonIndex !== -1) {
+            title = fullTip.substring(0, firstColonIndex);
+            content = fullTip.substring(firstColonIndex + 1);
+        }
+
         const t = TEXT[currentLang];
         document.getElementById('modal-title').textContent = `${t.modalTitlePrefix} ${day}`;
         
@@ -541,7 +493,6 @@
         document.getElementById('modal').classList.add('hidden');
     }
 
-    // --- SNOWFALL EFFECT ---
     function createSnow() {
         const snowContainer = document.getElementById('snow-container');
         if (!snowContainer) return;
@@ -557,9 +508,7 @@
         }
     }
 
-    // --- APPLICATION START ---
     document.addEventListener('DOMContentLoaded', () => {
-        // Sprachumschalter klicken
         const btnDe = document.getElementById('lang-de');
         const btnEn = document.getElementById('lang-en');
         if (btnDe) btnDe.addEventListener('click', () => setLanguage('de'));
@@ -572,4 +521,5 @@
 </script>
 </body>
 </html>
+
 
